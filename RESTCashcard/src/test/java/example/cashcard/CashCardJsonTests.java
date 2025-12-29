@@ -10,7 +10,7 @@ import org.springframework.boot.test.json.JacksonTester;
 
 // Marks as test class which uses Jackson framework
 @JsonTest
-public class CashCardJsonTest {
+public class CashCardJsonTests {
 
     // Directs Spring to create an object of requested type
     @Autowired
