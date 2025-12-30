@@ -1,5 +1,7 @@
 package example.cashcard;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -8,4 +10,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 interface CashCardRepository extends CrudRepository<CashCard, Long>, 
         PagingAndSortingRepository<CashCard, Long> {
     
+    // findBy + FieldName + And/Or + FieldName ...
+    // FiledName must match entity (CashCard)
+
+            
+    CashCard findByIdAndOwner(Long id, String owner);
+
+    Page<CashCard> findByOwner(String owner, PageRequest pageRequest);
 }
