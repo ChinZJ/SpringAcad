@@ -2,7 +2,12 @@ package com.amigoscode.spring_boot;
 
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class SoftwareEngineer {
+    @Id
     private Long id;
     private String name;
     private String techStack;
