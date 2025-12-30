@@ -3,7 +3,6 @@ package example.cashcard;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +30,17 @@ public class CashCardController {
         this.cashCardRepository = cashCardRepository;
     }
 
+    private CashCard findCashCard(Long requestedId, Principal principal) {
+        return cashCardRepository.findByIdAndOwner(requestedId, principal.getName());
+    }
+
     @GetMapping("/{requestedId}")
     private ResponseEntity<CashCard> findById(@PathVariable Long requestedId, Principal principal) {
         // @PathVariable makes Spring Web aware of requestedId supplied in HTTP request
-        Optional<CashCard> cashCardOptional = Optional.ofNullable(
-                cashCardRepository.findByIdAndOwner(requestedId, principal.getName()));
+        CashCard cashCard = findCashCard(requestedId, principal);
         
-        return (cashCardOptional.isPresent()) 
-                ? ResponseEntity.ok(cashCardOptional.get())
+        return (cashCard != null) 
+                ? ResponseEntity.ok(cashCard)
                 : ResponseEntity.notFound().build();
     }
 
@@ -70,5 +73,22 @@ public class CashCardController {
         return ResponseEntity
                 .created(locationOfNewCashCard)
                 .build();
+    }
+
+    @PutMapping("/{requestedId}")
+    private ResponseEntity<Void> putCashCard(@PathVariable Long requestedId, 
+                @RequestBody CashCard cashCardUpdate, Principal principal) {
+        
+        CashCard cashCard = findCashCard(requestedId, principal);
+        
+        if (cashCard != null) {
+            CashCard updatedCashCard = new CashCard(cashCard.id(), cashCardUpdate.amount(), principal.getName());
+            
+            cashCardRepository.save(updatedCashCard);
+
+            return ResponseEntity.noContent().build();
+        }
+            
+        return ResponseEntity.notFound().build();
     }
 }
