@@ -1,0 +1,38 @@
+### GET request to example server
+GET http://localhost:8080
+
+### GET request for list of software engineers 
+GET http://localhost:8080/api/v1/software-engineers
+
+### GET request for software engineer by ID
+GET http://localhost:8080/api/v1/software-engineers/1
+
+### POST request for adding a new software engineer
+POST http://localhost:8080/api/v1/software-engineers
+Content-Type: application/json
+
+{
+    "name": "James",
+    "techStack": "js, node, react" 
+}
+
+### POST request for adding a new software engineer
+POST http://localhost:8080/api/v1/software-engineers
+Content-Type: application/json
+
+{
+    "name": "Jamila",
+    "techStack": "java, spring boot, spring" 
+}
+
+### DELETE request for removing a software engineer by Id
+DELETE http://localhost:8080/api/v1/software-engineers/1
+
+### PUT request for updating an existing software engineer by Id
+PUT http://localhost:8080/api/v1/software-engineers/1
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "techStack": "Java, Spring Boot, PostgreSQL"
+}

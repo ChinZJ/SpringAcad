@@ -1,0 +1,31 @@
+### Common Commands
+# docker compose up -d (detached)
+# docker compose ps (sees process status)
+# docker compose logs (sees logs)
+# docker exec --it postgres bash
+  # psql -U amigoscode (access psql as user)
+  # \l (see database)
+  # create database XXX (name XXX)
+
+services:
+  db:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: amigoscode
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432" # anything, 5432 (by PostGres)
+    networks:
+      - db
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
